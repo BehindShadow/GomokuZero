@@ -4,21 +4,17 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 
 
-
 class Easy_model(nn.Module):
     def __init__(self, input_layer):
         super(Easy_model, self).__init__()
         self.conv1 = nn.Conv2d(input_layer, 16, 3, padding=1) # (input, output, kernel size, padding)
         self.conv2 = nn.Conv2d(16, 32, 3, padding=1)
-        # self.conv3 = nn.Conv2d(64, 128, 3)
         self.bn1 = nn.BatchNorm2d(16)
         self.bn2 = nn.BatchNorm2d(32)
-        # self.bn3 = nn.BatchNorm2d(128)
         self.relu = nn.ReLU()
     def forward(self, input):
         input = self.relu(self.bn1(self.conv1(input)))
         input = self.relu(self.bn2(self.conv2(input)))
-        # input = self.relu(self.bn3(self.conv3(input)))
 
         return input
 
@@ -55,6 +51,8 @@ class Model(nn.Module):
         p = self.relu(self.policy_bn1(p)).view(-1, 8*self.p * self.p)
         prob = self.policy_fc1(p)
         return prob, value
+
+
 
 
 class neuralnetwork:

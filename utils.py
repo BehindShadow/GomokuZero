@@ -62,7 +62,7 @@ def valid_move(state):
 
 
 class random_stack:
-    def __init__(self, length=100000):
+    def __init__(self, length=1024):
         self.state = []
         self.distrib = []
         self.winner = []

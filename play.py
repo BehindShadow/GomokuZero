@@ -7,7 +7,7 @@ from cfg import *
 def main(board):
     
     Net = NNagent(input_layers=3, board_size=config.board_size, learning_rate=config.learning_rate)
-    Net = torch.load('./model_weight/model_300.pkl')
+    Net = torch.load('./model_weight/model_650.pkl')
 
     state = board
     state_prob, _ = Net.eval(utils.transfer_to_input(state, 1, 3))
@@ -24,4 +24,4 @@ def main(board):
     print(f"下一步的位置应该在：({next_step[0]}, {next_step[1]}) 处")
 
 if __name__ == '__main__':
-    main(np.array([[1,0,0],[0,0,0],[-1,-1,0]]))
+    main(np.array([[0,0,1],[0,1,0],[0,-1,-1]]))
