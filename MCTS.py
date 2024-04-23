@@ -4,8 +4,9 @@ import sys
 import utils
 import time
 from game import main_process as game
+from cfg import config
 
-distrib_calculater = utils.distribution_calculater(utils.board_size)
+distrib_calculater = utils.distribution_calculater(config.board_size)
 
 class edge:
     def __init__(self, action, parent_node, priorP):
