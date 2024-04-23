@@ -1,2 +1,2 @@
 # GomokuZero
-a reinforcement learning program to help human play GomokuZ
+A reinforcement learning program to help human play GomokuZero
