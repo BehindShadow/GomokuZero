@@ -80,7 +80,7 @@ class neuralnetwork:
             output = F.log_softmax(prob, dim=1)
 
             cross_entropy = - torch.mean(torch.sum(distrib*output, 1))
-            mse = F.mse_loss(value, winner)
+            mse = F.mse_loss(value, winner.squeeze(1))
 
             loss = cross_entropy + mse
             loss.backward()

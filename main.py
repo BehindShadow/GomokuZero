@@ -30,12 +30,12 @@ def main():
         my_loader = utils.generate_data_loader(buffer)
         
         # 每50次采样后进行训练，训练5次
-        if game_time % 50 == 0:
+        if game_time % 50 == 0 and game_time != 0:
             for _ in range(5):
                 Net.train(my_loader, game_time)
             print("train finished")
 
-        if game_time % 50 == 0:
+        if game_time % 50 == 0 and game_time != 0:
             torch.save(Net, f"model_weight/model_{game_time}.pkl")
 
         game_time += 1
