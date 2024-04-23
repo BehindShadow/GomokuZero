@@ -10,7 +10,6 @@ def main():
     buffer = utils.random_stack()
     tree = MCTS.MCTS(board_size=config.board_size, neural_network=Net)
     
-    # record = []
     game_time = 0
 
     while True:

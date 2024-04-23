@@ -50,21 +50,6 @@ class distribution_calculater:
             move = choice_pool[np.argmax(choice_prob)]
         return move, result
 
-# def step_child_remove(board_pool, child_pool):
-#     i = 0
-#     while i<len(board_pool) and len(child_pool) != 0:
-#         j = 0
-#         while j<len(child_pool):
-#             if np.array_equal(board_pool[i], child_pool[j]):
-#                 board_pool.pop(i)
-#                 child_pool.pop(j)
-#                 i -= 1
-#                 break
-#             else:
-#                 j += 1
-#         i+=1
-#     return board_pool
-
 
 def move_to_str(action):
     return num2char[action[0]] + num2char[action[1]]
@@ -75,20 +60,9 @@ def str_to_move(str):
 def valid_move(state):
     return list(np.argwhere(state==0))
 
-# def generate_new_state(old_name, step, current_player):
-#     if current_player == 1:
-#         step = "B" + num2char[step[0]] + num2char[step[1]]
-#     else:
-#         step = "W" + num2char[step[0]] + num2char[step[1]]
-#     for i in range(0, len(old_name), 3):
-#         if old_name[i+1]>step[1] or (old_name[i+1]==step[1] and old_name[i+2]>step[2]):
-#             new_name = old_name[:i] + step + old_name[i:]
-#             return new_name
-#     new_name = old_name + step
-#     return new_name
 
 class random_stack:
-    def __init__(self, length=1000):
+    def __init__(self, length=100000):
         self.state = []
         self.distrib = []
         self.winner = []
