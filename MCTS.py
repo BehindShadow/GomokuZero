@@ -37,7 +37,7 @@ class edge:
             Q = self.action_value / self.counter
         else:
             Q = 0
-        return Q + utils.Cpuct * self.priorP * np.sqrt(self.parent_node.counter) / (1 + self.counter)
+        return Q + config.Cpuct * self.priorP * np.sqrt(self.parent_node.counter) / (1 + self.counter)
 
 class node:
     def __init__(self, parent, player):
