@@ -6,7 +6,7 @@ from cfg import *
 
 def main(board):
     
-    Net = NNagent(input_layers=3, board_size=board_size, learning_rate=learning_rate)
+    Net = NNagent(input_layers=3, board_size=config.board_size, learning_rate=config.learning_rate)
     Net = torch.load('./model_weight/model_300.pkl')
 
     state = board
