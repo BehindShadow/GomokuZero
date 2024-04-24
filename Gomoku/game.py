@@ -65,26 +65,24 @@ class main_process:
     def check_win(self):
         if self.board[self.last_step[0], self.last_step[1]] == 1:
             x_tmp, y_tmp = self.last_step[0], self.last_step[1]
-            for i in range(3):
-                if sum(self.board[x_tmp-2+i:x_tmp+1+i, y_tmp])==3:
+            for i in range(5):
+                if sum(self.board[x_tmp-4+i:x_tmp+1+i, y_tmp])==5:
                     return True
-                elif sum(self.board[x_tmp, y_tmp-2+i:y_tmp+1+i])==3:
+                elif sum(self.board[x_tmp, y_tmp-4+i:y_tmp+1+i])==5:
                     return True
-                elif self.board[x_tmp+i-2,y_tmp+i-2]+self.board[x_tmp+i-1,y_tmp+i-1]+self.board[x_tmp+i,y_tmp+i]==3:
+                elif self.board[x_tmp+i-4,y_tmp+i-4]+self.board[x_tmp+i-3,y_tmp+i-3]+self.board[x_tmp+i-2,y_tmp+i-2]+self.board[x_tmp+i-1,y_tmp+i-1]+self.board[x_tmp+i,y_tmp+i]==5:
                     return True
-                elif self.board[x_tmp+i-2,y_tmp-i+2]+self.board[x_tmp+i-1,y_tmp-i+1]+self.board[x_tmp+i,y_tmp-i]==3:
+                elif self.board[x_tmp+i-4,y_tmp-i+4]+self.board[x_tmp+i-3,y_tmp-i+3]+self.board[x_tmp+i-2,y_tmp-i+2]+self.board[x_tmp+i-1,y_tmp-i+1]+self.board[x_tmp+i,y_tmp-i]==5:
                     return True
         elif self.board[self.last_step[0], self.last_step[1]] == -1:
             x_tmp, y_tmp = self.last_step[0], self.last_step[1]
-            for i in range(3):
-                if sum(self.board[x_tmp - 2 + i:x_tmp + 1 + i, y_tmp]) == -3:
+            for i in range(5):
+                if sum(self.board[x_tmp-4+i:x_tmp+1+i,y_tmp])==-5:
                     return True
-                elif sum(self.board[x_tmp, y_tmp - 2 + i:y_tmp + 1 + i]) == -3:
+                elif sum(self.board[x_tmp,y_tmp-4+i:y_tmp+1+i])==-5:
                     return True
-                elif self.board[x_tmp + i - 2, y_tmp + i - 2] + \
-                        self.board[x_tmp + i - 1, y_tmp + i - 1] + self.board[x_tmp + i, y_tmp + i] == -3:
+                elif self.board[x_tmp+i-4,y_tmp+i-4]+self.board[x_tmp+i-3,y_tmp+i-3]+self.board[x_tmp+i-2,y_tmp+i-2]+self.board[x_tmp+i-1,y_tmp+i-1]+self.board[x_tmp+i,y_tmp+i]==-5:
                     return True
-                elif self.board[x_tmp + i - 2, y_tmp - i + 2] + \
-                        self.board[x_tmp + i - 1, y_tmp - i + 1] + self.board[x_tmp + i, y_tmp - i] == -3:
+                elif self.board[x_tmp+i-4,y_tmp-i+4]+self.board[x_tmp+i-3,y_tmp-i+3]+self.board[x_tmp+i-2,y_tmp-i+2]+self.board[x_tmp+i-1,y_tmp-i+1]+self.board[x_tmp+i,y_tmp-i]==-5:
                     return True
         return False
