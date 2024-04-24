@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
+from cfg import config
 
 
 class Easy_model(nn.Module):
@@ -58,7 +59,7 @@ class Model(nn.Module):
 class neuralnetwork:
     def __init__(self, input_layers, board_size,  learning_rate=0.1):
 
-        self.model = Model(input_layer=input_layers, board_size=board_size).cuda().double()
+        self.model = Model(input_layer=input_layers, board_size=board_size).to(config.device).double()
         self.opt = torch.optim.SGD(self.model.parameters(), momentum=0.9, lr=learning_rate, weight_decay=1e-4)
 
         self.mse = nn.MSELoss()
@@ -71,7 +72,7 @@ class neuralnetwork:
         for batch_idx, (state, distrib, winner) in enumerate(data_loader):
             tmp = []
             state, distrib, winner = Variable(state).double(), Variable(distrib).double(), Variable(winner).unsqueeze(1).double()
-            state, distrib, winner = state.cuda(), distrib.cuda(), winner.cuda()
+            state, distrib, winner = state.to(config.device), distrib.to(config.device), winner.to(config.device)
 
             self.opt.zero_grad()
             prob, value = self.model(state)
@@ -93,7 +94,7 @@ class neuralnetwork:
 
     def eval(self, state):
         self.model.eval()
-        state = torch.from_numpy(state).unsqueeze(0).double().cuda()
+        state = torch.from_numpy(state).unsqueeze(0).double().to(config.device)
 
         with torch.no_grad():
             prob, value = self.model(state)

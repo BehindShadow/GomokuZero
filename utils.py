@@ -14,7 +14,7 @@ char2num = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7, "i":
 
 class distribution_calculater:
     def __init__(self, size):
-        self.map = {} # 命名之后全部值设置为0， 这两个加起来不就是有序字典么
+        self.map = {} # 命名之后全部值设置为0， 这两个加起来不就是有序字典
         self.order = [] # aa, ab, ac, .... cc. for 3*3 board size
         for i in range(size):
             for j in range(size):
@@ -62,7 +62,7 @@ def valid_move(state):
 
 
 class random_stack:
-    def __init__(self, length=1024):
+    def __init__(self, length=config.buffer_size):
         self.state = []
         self.distrib = []
         self.winner = []
@@ -88,6 +88,7 @@ def generate_training_data(game_record, board_size):
     board = np.zeros([board_size, board_size])
     data = []
     player = 1
+    # 奖励机制设计
     winner = -1 if len(game_record) % 2 == 0 else 1
     for i in range(len(game_record)):
         step = str_to_move(game_record[i]['action'])
