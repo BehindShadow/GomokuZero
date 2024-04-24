@@ -89,7 +89,10 @@ def generate_training_data(game_record, board_size):
     data = []
     player = 1
     # 奖励机制设计
-    winner = -1 if len(game_record) % 2 == 0 else 1
+    if len(game_record) == 9:
+        winner = 0.1
+    else:
+        winner = -1 if len(game_record) % 2 == 0 else 1
     for i in range(len(game_record)):
         step = str_to_move(game_record[i]['action'])
         state = transfer_to_input(board, player, board_size)
