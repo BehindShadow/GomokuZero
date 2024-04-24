@@ -41,14 +41,14 @@ class ResNet(nn.Module):
     def __init__(self, block, layers, input_layer):# Block 类型， block数量， 输入通道数
         super(ResNet, self).__init__()
         self.inplanes = 16
-        self.conv1 = nn.Conv2d(input_layer, 16, kernel_size=3, stride=1, padding=1,
+        self.conv1 = nn.Conv2d(input_layer, 32, kernel_size=3, stride=1, padding=1,
                                bias=False) # 3*15*15 -> 16*15*15
         self.bn1 = nn.BatchNorm2d(16)
         self.relu = nn.ReLU(inplace=True)
-        self.layer1 = self._make_layer(block, 16, layers[0]) # 16*15*15 -> 32*15*15 
-        self.layer2 = self._make_layer(block, 32, layers[1], stride=1)
+        self.layer1 = self._make_layer(block, 32, layers[0]) # 16*15*15 -> 32*15*15 
+        # self.layer2 = self._make_layer(block, 32, layers[1], stride=1)
         self.layer3 = self._make_layer(block, 64, layers[2], stride=2)
-        self.layer4 = self._make_layer(block, 256, layers[3], stride=2)
+        self.layer4 = self._make_layer(block, 128, layers[3], stride=2)
 
     def _make_layer(self, block, planes, blocks, stride=1):
         downsample = None
@@ -72,37 +72,20 @@ class ResNet(nn.Module):
         x = self.relu(x)
 
         x = self.layer1(x)
-        x = self.layer2(x)
+        # x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
 
         return x
-
-# class Easy_model(nn.Module):
-#     def __init__(self, input_layer):
-#         super(Easy_model, self).__init__()
-#         self.conv1 = nn.Conv2d(input_layer, 32, 3, padding=1)
-#         self.conv2 = nn.Conv2d(32, 64, 3)
-#         self.conv3 = nn.Conv2d(64, 128, 3)
-#         self.bn1 = nn.BatchNorm2d(32)
-#         self.bn2 = nn.BatchNorm2d(64)
-#         self.bn3 = nn.BatchNorm2d(128)
-#         self.relu = nn.ReLU()
-#     def forward(self, input):
-#         input = self.relu(self.bn1(self.conv1(input)))
-#         input = self.relu(self.bn2(self.conv2(input)))
-#         input = self.relu(self.bn3(self.conv3(input)))
-
-#         return input
 
 
 
 class Model(nn.Module):
     def __init__(self, input_layer, board_size):
         super(Model, self).__init__()
-        self.model =  ResNet(block=BasicBlock, layers=[2, 2, 2, 2], input_layer=input_layer)
+        self.model =  ResNet(block=BasicBlock, layers=[2, 2, 3], input_layer=input_layer)
         self.p = 4
-        self.output_channel = 256
+        self.output_channel = 128
         self.tanh = nn.Tanh()
         self.relu = nn.ReLU()
         # value head
@@ -128,8 +111,6 @@ class Model(nn.Module):
         p = self.relu(self.policy_bn1(p)).view(-1, 32*self.p * self.p)
         prob = self.policy_fc1(p)
         return prob, value
-
-
 
 
 class neuralnetwork:
