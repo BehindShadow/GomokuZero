@@ -2,28 +2,35 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
+import torchvision
 from cfg import config
 
 
 class Easy_model(nn.Module):
     def __init__(self, input_layer):
         super(Easy_model, self).__init__()
-        self.conv1 = nn.Conv2d(input_layer, 16, 3, padding=1) # (input, output, kernel size, padding)
-        self.conv2 = nn.Conv2d(16, 32, 3, padding=1)
-        self.bn1 = nn.BatchNorm2d(16)
-        self.bn2 = nn.BatchNorm2d(32)
+        self.conv1 = nn.Conv2d(input_layer, 32, 3, padding=1)
+        self.conv2 = nn.Conv2d(32, 64, 3)
+        self.conv3 = nn.Conv2d(64, 128, 3)
+        self.bn1 = nn.BatchNorm2d(32)
+        self.bn2 = nn.BatchNorm2d(64)
+        self.bn3 = nn.BatchNorm2d(128)
         self.relu = nn.ReLU()
     def forward(self, input):
         input = self.relu(self.bn1(self.conv1(input)))
         input = self.relu(self.bn2(self.conv2(input)))
+        input = self.relu(self.bn3(self.conv3(input)))
 
         return input
+
 
 
 class Model(nn.Module):
     def __init__(self, input_layer, board_size):
         super(Model, self).__init__()
-        self.model = Easy_model(input_layer)
+        resmodel = torchvision.models.resnet18()
+        print(nn.Sequential(*list(resmodel.children())[:]))
+        self.model = resmodel # Easy_model(input_layer)
         self.p = 3
         self.output_channel = 32
         self.tanh = nn.Tanh()
