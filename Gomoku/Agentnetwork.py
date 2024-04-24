@@ -40,7 +40,7 @@ class ResNet(nn.Module):
 
     def __init__(self, block, layers, input_layer):# Block 类型， block数量， 输入通道数
         super(ResNet, self).__init__()
-        self.inplanes = 16
+        self.inplanes = 32
         self.conv1 = nn.Conv2d(input_layer, 32, kernel_size=3, stride=1, padding=1,
                                bias=False) # 3*15*15 -> 16*15*15
         self.bn1 = nn.BatchNorm2d(32)
