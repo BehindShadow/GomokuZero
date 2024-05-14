@@ -79,7 +79,7 @@ class node:
     
 
 class MCTS:
-    def __init__(self, board_size=15, simulation_per_step=400, neural_network=None):
+    def __init__(self, board_size=15, simulation_per_step=300, neural_network=None):
         self.board_size = board_size
         self.s_per_step = simulation_per_step
 
