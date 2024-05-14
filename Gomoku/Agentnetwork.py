@@ -83,32 +83,32 @@ class ResNet(nn.Module):
 class Model(nn.Module):
     def __init__(self, input_layer, board_size):
         super(Model, self).__init__()
-        self.model =  ResNet(block=BasicBlock, layers=[2, 2, 2, 2], input_layer=input_layer)
+        self.model =  ResNet(block=BasicBlock, layers=[2, 2, 1, 2], input_layer=input_layer)
         self.p = 4
         self.output_channel = 128
         self.tanh = nn.Tanh()
         self.relu = nn.ReLU()
         # value head
-        self.value_conv1 = nn.Conv2d(kernel_size=1, in_channels=self.output_channel, out_channels=32)
-        self.value_bn1 = nn.BatchNorm2d(32)
-        self.value_fc1 = nn.Linear(in_features=32 * self.p * self.p, out_features=256)
+        self.value_conv1 = nn.Conv2d(kernel_size=1, in_channels=self.output_channel, out_channels=16)
+        self.value_bn1 = nn.BatchNorm2d(16)
+        self.value_fc1 = nn.Linear(in_features=16 * self.p * self.p, out_features=256)
         self.value_fc2 = nn.Linear(in_features=256, out_features=1)
         # policy head
-        self.policy_conv1 = nn.Conv2d(kernel_size=1, in_channels=self.output_channel, out_channels=32)
-        self.policy_bn1 = nn.BatchNorm2d(32)
-        self.policy_fc1 = nn.Linear(in_features=32 * self.p * self.p, out_features=board_size * board_size)
+        self.policy_conv1 = nn.Conv2d(kernel_size=1, in_channels=self.output_channel, out_channels=16)
+        self.policy_bn1 = nn.BatchNorm2d(16)
+        self.policy_fc1 = nn.Linear(in_features=16 * self.p * self.p, out_features=board_size * board_size)
 
     def forward(self, state):
         s = self.model(state)
         # value head part
         v = self.value_conv1(s)
-        v = self.relu(self.value_bn1(v)).view(-1, 32*self.p *self.p)
+        v = self.relu(self.value_bn1(v)).view(-1, 16*self.p *self.p)
         v = self.relu(self.value_fc1(v))
         value = self.tanh(self.value_fc2(v))
 
         # policy head part
         p = self.policy_conv1(s)
-        p = self.relu(self.policy_bn1(p)).view(-1, 32*self.p * self.p)
+        p = self.relu(self.policy_bn1(p)).view(-1, 16*self.p * self.p)
         prob = self.policy_fc1(p)
         return prob, value
 
