@@ -84,7 +84,7 @@ class Model(nn.Module):
     def __init__(self, input_layer, board_size):
         super(Model, self).__init__()
         self.model =  ResNet(block=BasicBlock, layers=[2, 2, 1, 2], input_layer=input_layer)
-        self.p = 4
+        self.p = 3
         self.output_channel = 128
         self.tanh = nn.Tanh()
         self.relu = nn.ReLU()
