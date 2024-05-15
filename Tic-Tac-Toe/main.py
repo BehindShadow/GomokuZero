@@ -8,7 +8,7 @@ def main():
     
     Net = NNagent(input_layers=3, board_size=config.board_size, learning_rate=config.learning_rate)
     buffer = utils.random_stack()
-    tree = MCTS.MCTS(board_size=config.board_size,simulation_per_step=300, neural_network=Net)
+    tree = MCTS.MCTS(board_size=config.board_size, neural_network=Net)
     
     game_time = 0
 
@@ -29,7 +29,7 @@ def main():
         my_loader = utils.generate_data_loader(buffer)
         
         # 每50次采样后进行训练，训练5次
-        if game_time % 50 == 0:
+        if game_time % 50 == 0 and game_time != 0:
             for _ in range(5):
                 Net.train(my_loader, game_time)
             print("train finished")
