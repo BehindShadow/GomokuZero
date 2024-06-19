@@ -5,6 +5,9 @@ import time
 from game import main_process as game
 from cfg import config
 
+num2char = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f", 6: "g", 7: "h", 8: "i", 9: "j", 10: "k", 11: "l", 12: "m",
+            13: "n", 14: "o", 15: "p", 16: "q", 17: "r", 18: "s", 19: "t", 20: "u"}
+
 distrib_calculater = utils.distribution_calculater(config.board_size)
 
 class edge:
@@ -76,13 +79,14 @@ class node:
                 UCB_max = self.child[key].UCB_value()
         this_node, expand = self.child[UCB_max_key].get_child()
         return this_node, expand, self.child[UCB_max_key].action
-    
+
 
 class MCTS:
-    def __init__(self, board_size=15, simulation_per_step=300, neural_network=None):
+    def __init__(self, board_size=11, simulation_per_step=400, neural_network=None):
         self.board_size = board_size
         self.s_per_step = simulation_per_step
-
+        # self.database = {0: {"":node(init_node, 1, self)}}  # here we haven't complete a whole database that can be
+        # self.current_node = self.database[0][""]                   # used to search the exist node
         self.current_node = node(None, 1)
         self.NN = neural_network
         self.game_process = game(board_size=board_size)  # 这里附加主游戏进程
@@ -140,8 +144,8 @@ class MCTS:
             self.current_node = self.MCTS_step(action)
             game_record.append({"distribution": distribution, "action":action})
             end_time1 = int(time.time())
-            print("step:{},cost:{}s, total time:{}:{} Avg eval:{}, Aver step:{}".format(step, end_time1-begin_time1, int((end_time1 - begin_time)/60),
-                                                    (end_time1 - begin_time) % 60, avg_eval, avg_s_per_step), end="\r")
+            # print("step:{},cost:{}s, total time:{}:{} Avg eval:{}, Aver step:{}".format(step, end_time1-begin_time1, int((end_time1 - begin_time)/60),
+            #                                         (end_time1 - begin_time) % 60, avg_eval, avg_s_per_step), end="\r")
             total_eval += avg_eval
             total_step += avg_s_per_step
             step += 1
@@ -151,3 +155,26 @@ class MCTS:
         second = (end_time - begin_time) % 60
         print("In last game, we cost {}:{}".format(min, second), end="\n")
         return game_record, total_eval/step, total_step/step
+
+    def interact_game_init(self):
+        self.renew()
+        _, _ = self.simulation()
+        action, distribution = self.current_node.get_distribution(train=False)
+        game_continue, state = self.game_process.step(utils.str_to_move(action))
+        self.current_node = self.MCTS_step(action)
+        return state, game_continue
+
+    def interact_game1(self, action):
+        game_continue, state = self.game_process.step(action)
+        return state, game_continue
+
+    def interact_game2(self, action, game_continue, state):
+        self.current_node = self.MCTS_step(utils.move_to_str(action))
+        if not game_continue:
+            pass
+        else:
+            _, _ = self.simulation()
+            action, distribution = self.current_node.get_distribution(train=False)
+            game_continue, state = self.game_process.step(utils.str_to_move(action))
+            self.current_node = self.MCTS_step(action)
+        return state, game_continue
